@@ -1,4 +1,4 @@
-# ERMS Backend – Setup Guide
+# GradeSphere – Setup Guide
 ## PHP + MySQL (XAMPP)
 
 ---
@@ -34,7 +34,7 @@ This creates `erms_db` with all tables and demo data.
 ### Step 3 – Copy Files to htdocs
 Copy **all your files** (HTML, CSS, images, PHP files) into:
 ```
-C:\xampp\htdocs\erms\
+`C:\xampp\htdocs\GradeSphere\`
 ```
 Your folder should look like:
 ```
@@ -55,11 +55,10 @@ erms/
 ├── admin_api.php
 ├── student_api.php
 ├── pic1_jpg.jpeg ... (all images)
-└── erms_database.sql
 ```
 
 ### Step 4 – Access the Site
-Open: `http://localhost/erms/index.html`
+Open: http://localhost/GradeSphere/index.html
 
 ### Step 5 – Login & Test
 
