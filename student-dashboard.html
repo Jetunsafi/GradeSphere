@@ -1,0 +1,806 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Dashboard - ERMS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Dashboard Navigation -->
+    <nav class="dashboard-nav">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="logo-text">
+                    <span>ERMS</span>
+                    <small>Student Portal</small>
+                </div>
+            </a>
+            <div class="nav-right">
+                <div class="user-info">
+                    <span class="user-name" id="displayName">Loading...</span>
+                    <span class="user-roll" id="displayRoll"></span>
+                </div>
+                <button onclick="logout()" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <div class="dashboard-layout">
+        <!-- Sidebar -->
+        <aside class="dashboard-sidebar">
+            <div class="student-profile-card">
+                <div class="profile-image" id="studentAvatar"
+                    style="width:80px;height:80px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:1px;margin:0 auto 10px;background:linear-gradient(135deg,#4361ee,#7c3aed);text-transform:uppercase;">
+                    ?
+                </div>
+                <h3 id="studentName">Loading...</h3>
+                <p id="studentCourse" style="font-size:0.78rem;color:#888;margin-top:4px;text-align:center;"></p>
+                <div id="studentDeptBadge" style="display:inline-block;margin-top:6px;background:#e8eaf6;color:#3949ab;font-size:0.72rem;padding:3px 10px;border-radius:20px;font-weight:600;"></div>
+            </div>
+
+            <ul class="sidebar-menu">
+                <li class="active">
+                    <a href="student-dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showResultModal()">
+                        <i class="fas fa-chart-line"></i>
+                        <span>View Results</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="showSemesterResults()">
+                        <i class="fas fa-layer-group"></i>
+                        <span>Semester Results</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="downloadMarksheet()">
+                        <i class="fas fa-download"></i>
+                        <span>Download Marksheet</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" onclick="viewProfile()">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="index.html" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <!-- Welcome Banner -->
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="welcomeName">Student</span>! 👋</h1>
+                    <p>Here's your academic summary and latest results</p>
+                </div>
+                <div class="date-display" id="currentDate"></div>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e3f2fd;">
+                        <i class="fas fa-star" style="color: #1976d2;"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Current SGPA</h3>
+                        <p class="stat-value" id="statSGPA">--</p>
+                        <span class="stat-trend positive"><i class="fas fa-arrow-up"></i> Live</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #e8f5e8;">
+                        <i class="fas fa-trophy" style="color: #388e3c;"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>CGPA</h3>
+                        <p class="stat-value" id="statCGPA">--</p>
+                        <span class="stat-trend">Overall</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fff3e0;">
+                        <i class="fas fa-book" style="color: #f57c00;"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Semesters</h3>
+                        <p class="stat-value" id="statSubjects">--</p>
+                        <span class="stat-trend">Completed</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: #fce4e4;">
+                        <i class="fas fa-check-circle" style="color: #c2185b;"></i>
+                    </div>
+                    <div class="stat-details">
+                        <h3>Status</h3>
+                        <p class="stat-value" id="statStatus">--</p>
+                        <span class="stat-trend positive">Latest Sem</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Semester Result Selector -->
+            <div id="semResultsSection"
+                style="background:white;border-radius:18px;padding:28px 30px;margin-bottom:24px;box-shadow:0 2px 16px rgba(67,97,238,0.07);">
+                <h2 style="font-size:1.1rem;color:#2b2d42;margin-bottom:18px;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-graduation-cap" style="color:#4361ee;"></i> View Semester Results
+                </h2>
+                <div style="display:flex;align-items:flex-end;gap:14px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:170px;">
+                        <label
+                            style="display:block;font-size:0.82rem;color:#888;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Semester</label>
+                        <select id="semDropdown" class="form-control"
+                            style="padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:0.95rem;outline:none;">
+                            <!-- Populated by JS based on student course -->
+                        </select>
+                    </div>
+                    <div style="flex:1;min-width:150px;">
+                        <label
+                            style="display:block;font-size:0.82rem;color:#888;margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;">Exam
+                            Year</label>
+                        <select id="examYearDropdown" class="form-control"
+                            style="padding:11px 14px;border:1.5px solid #e0e0e0;border-radius:10px;font-size:0.95rem;outline:none;">
+                            <option value="">Auto-detect</option>
+                        </select>
+                    </div>
+                    <button onclick="viewSemesterResult()" id="viewMarksheetBtn"
+                        style="background:linear-gradient(135deg,#4361ee,#7c3aed);color:white;border:none;padding:12px 28px;border-radius:10px;font-weight:700;font-size:0.95rem;cursor:pointer;display:flex;align-items:center;gap:8px;white-space:nowrap;box-shadow:0 4px 15px rgba(67,97,238,0.3);transition:transform .2s;"
+                        onmouseover="this.style.transform='translateY(-2px)'" onmouseout="this.style.transform='none'">
+                        <i class="fas fa-eye"></i> View Marksheet
+                    </button>
+                </div>
+                <!-- Inline marksheet renders here -->
+                <div id="inlineMarksheet" style="display:none;margin-top:26px;"></div>
+            </div>
+
+            <!-- Semester Academic History Table -->
+            <div id="semHistorySection" style="background:white;border-radius:18px;padding:24px 28px;margin-bottom:24px;box-shadow:0 2px 16px rgba(67,97,238,0.07);">
+                <h2 style="font-size:1.05rem;color:#2b2d42;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-layer-group" style="color:#4361ee;"></i> Semester-wise Academic History
+                    <span id="cgpaBadge" style="margin-left:auto;background:linear-gradient(135deg,#4361ee,#7c3aed);color:#fff;font-size:0.8rem;padding:4px 14px;border-radius:20px;font-weight:700;">CGPA: --</span>
+                </h2>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%;border-collapse:collapse;font-size:0.88rem;">
+                        <thead>
+                            <tr style="background:#f0f4ff;">
+                                <th style="padding:10px 12px;text-align:left;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">Semester</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">Year</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">Marks</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">%</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">SGPA</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">Grade</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">Result</th>
+                                <th style="padding:10px 12px;text-align:center;color:#4361ee;font-weight:700;border-bottom:2px solid #e0e6ff;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="semesterResultsBody">
+                            <tr><td colspan="8" style="text-align:center;padding:20px;color:#aaa;"><i class="fas fa-spinner fa-spin"></i> Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Subject Performance Cards (Current Semester) -->
+            <div id="subjectCardsSection" style="background:white;border-radius:18px;padding:24px 28px;margin-bottom:24px;box-shadow:0 2px 16px rgba(67,97,238,0.07);">
+                <h2 style="font-size:1.05rem;color:#2b2d42;margin-bottom:16px;display:flex;align-items:center;gap:10px;">
+                    <i class="fas fa-book-open" style="color:#f57c00;"></i> Current Semester — Subject Performance
+                    <span id="currentSemBadge" style="margin-left:auto;background:#fff3e0;color:#f57c00;font-size:0.78rem;padding:3px 12px;border-radius:20px;font-weight:600;"></span>
+                </h2>
+                <div id="subjectPerformanceGrid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;"></div>
+            </div>
+
+            <!-- Hidden stub for timeline (kept for JS compatibility) -->
+            <div id="academicTimeline" style="display:none;"></div>
+
+
+            <div id="profileSection" style="display:none;">
+                <div class="card" style="max-width:850px; margin:0 auto;">
+                    <div class="card-header" style="border-bottom:2px solid #e0e0e0; padding-bottom:15px;">
+                        <h2 style="display:flex;align-items:center;gap:10px;">
+                            <i class="fas fa-user-circle" style="color:#4361ee;font-size:1.5rem;"></i> My Profile
+                        </h2>
+                    </div>
+                    <div style="padding:10px 0;">
+                        <!-- Profile Photo + Name Header -->
+                        <div
+                            style="text-align:center; padding:20px 0 25px; border-bottom:1px solid #f0f0f0; margin-bottom:20px;">
+                            <div id="profileAvatar"
+                                style="width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,#4361ee,#7c3aed);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:2rem;font-weight:800;color:#fff;letter-spacing:1px;text-transform:uppercase;box-shadow:0 4px 18px rgba(67,97,238,0.35);">
+                                ?
+                            </div>
+                            <h3 id="profileFullName" style="font-size:1.4rem;color:#2b2d42;margin-bottom:6px;">--</h3>
+                            <p id="profileRollBadge"
+                                style="display:inline-block;background:#e3f2fd;color:#1565c0;padding:4px 14px;border-radius:20px;font-size:0.85rem;font-weight:600;">
+                                --</p>
+                        </div>
+
+                        <!-- Profile Details Grid - 6 main fields -->
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:0;">
+
+                            <!-- Date of Birth -->
+                            <div
+                                style="padding:16px 22px; border-bottom:1px solid #f0f0f0; border-right:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-birthday-cake" style="margin-right:6px;color:#e91e63;"></i> Date of
+                                    Birth
+                                </div>
+                                <div id="profileDOB" style="font-size:1rem;font-weight:700;color:#2b2d42;">--</div>
+                            </div>
+
+                            <!-- Enrollment No -->
+                            <div style="padding:16px 22px; border-bottom:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-id-badge" style="margin-right:6px;color:#4361ee;"></i> Enrollment
+                                    No
+                                </div>
+                                <div id="profileEnrollment" style="font-size:1rem;font-weight:700;color:#2b2d42;">--
+                                </div>
+                            </div>
+
+                            <!-- Course -->
+                            <div
+                                style="padding:16px 22px; border-bottom:1px solid #f0f0f0; border-right:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-graduation-cap" style="margin-right:6px;color:#f57c00;"></i> Course
+                                </div>
+                                <div id="profileCourse" style="font-size:1rem;font-weight:700;color:#2b2d42;">--</div>
+                            </div>
+
+                            <!-- Academic Year -->
+                            <div style="padding:16px 22px; border-bottom:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-calendar-alt" style="margin-right:6px;color:#3f51b5;"></i> Academic
+                                    Year
+                                </div>
+                                <div id="profileAcademicYear" style="font-size:1rem;font-weight:700;color:#2b2d42;">--
+                                </div>
+                            </div>
+
+                            <!-- Gender -->
+                            <div
+                                style="padding:16px 22px; border-bottom:1px solid #f0f0f0; border-right:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-venus-mars" style="margin-right:6px;color:#9c27b0;"></i> Gender
+                                </div>
+                                <div id="profileGender" style="font-size:1rem;font-weight:700;color:#2b2d42;">--</div>
+                            </div>
+
+                            <!-- Email -->
+                            <div style="padding:16px 22px; border-bottom:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-envelope" style="margin-right:6px;color:#e91e63;"></i> Email
+                                </div>
+                                <div id="profileEmail"
+                                    style="font-size:1rem;font-weight:700;color:#2b2d42;word-break:break-all;">--</div>
+                            </div>
+
+                            <!-- Current Semester -->
+                            <div style="padding:16px 22px; border-right:1px solid #f0f0f0;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-layer-group" style="margin-right:6px;color:#795548;"></i> Current
+                                    Semester
+                                </div>
+                                <div id="profileSemester" style="font-size:1rem;font-weight:700;color:#2b2d42;">--</div>
+                            </div>
+
+                            <!-- Phone -->
+                            <div style="padding:16px 22px;">
+                                <div
+                                    style="font-size:0.72rem;color:#888;text-transform:uppercase;letter-spacing:0.6px;margin-bottom:6px;">
+                                    <i class="fas fa-phone" style="margin-right:6px;color:#4caf50;"></i> Phone
+                                </div>
+                                <div id="profilePhone" style="font-size:1rem;font-weight:700;color:#2b2d42;">--</div>
+                            </div>
+
+                        </div>
+                        <!-- hidden helper for viewProfile() -->
+                        <div id="profileName" style="display:none;"></div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- Dynamic Result Modal -->
+    <div id="resultModal" class="modal">
+        <div class="modal-content result-modal"
+            style="max-width:860px;margin:30px auto;border-radius:18px;overflow:hidden;">
+            <div class="modal-header"
+                style="background:linear-gradient(135deg,#4361ee,#3a0ca3);color:white;padding:20px 28px;">
+                <h2 style="margin:0;font-size:1.2rem;color:white;">
+                    <i class="fas fa-file-alt" style="margin-right:8px;"></i>
+                    Detailed Statement of Marks — Semester <span id="modalSemesterTitle">–</span>
+                </h2>
+                <span class="close" onclick="closeModal()"
+                    style="color:white;font-size:1.8rem;cursor:pointer;">&times;</span>
+            </div>
+            <div class="modal-body" style="max-height:78vh;overflow-y:auto;padding:24px;">
+                <!-- Student Info Header -->
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border:2px solid #000;margin-bottom:20px;">
+                    <div style="padding:10px 16px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
+                        <strong>Student Name:</strong> <span id="modalStudentName">–</span>
+                    </div>
+                    <div style="padding:10px 16px;border-bottom:1px solid #ccc;">
+                        <strong>Roll Number:</strong> <span id="modalRollNo">–</span>
+                    </div>
+                    <div style="padding:10px 16px;border-right:1px solid #ccc;border-bottom:1px solid #ccc;">
+                        <strong>Father's Name:</strong> <span id="modalFatherName">–</span>
+                    </div>
+                    <div style="padding:10px 16px;border-bottom:1px solid #ccc;">
+                        <strong>Registration No:</strong> <span id="modalRegNo">–</span>
+                    </div>
+                    <div style="padding:10px 16px;border-right:1px solid #ccc;">
+                        <strong>Course:</strong> <span id="modalCourse">–</span>
+                    </div>
+                    <div style="padding:10px 16px;">
+                        <strong>Exam Year:</strong> <span id="modalExamYear">–</span>
+                    </div>
+                </div>
+
+                <!-- Marks Table -->
+                <h4 style="font-size:1rem;font-weight:bold;margin:18px 0 10px;">Subject-wise Marks</h4>
+                <div style="overflow-x:auto;">
+                    <table style="width:100%;border-collapse:collapse;border:2px solid #000;font-size:13.5px;">
+                        <thead>
+                            <tr style="background:#f0f0f0;">
+                                <th style="border:1px solid #000;padding:9px 8px;">S.No</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Code</th>
+                                <th style="border:1px solid #000;padding:9px 8px;text-align:left;">Subject Name</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Theory</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Practical</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Total</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Max</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Grade</th>
+                                <th style="border:1px solid #000;padding:9px 8px;">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dynamicMarksBody">
+                            <tr>
+                                <td colspan="9" style="text-align:center;padding:18px;color:#888;">Loading...</td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style="background:#f5f5f5;font-weight:bold;">
+                                <td colspan="5" style="border:1px solid #000;padding:9px 8px;text-align:right;">Grand
+                                    Total</td>
+                                <td style="border:1px solid #000;padding:9px 8px;text-align:center;"
+                                    id="modalGrandTotal">–</td>
+                                <td style="border:1px solid #000;padding:9px 8px;text-align:center;" id="modalGrandMax">
+                                    –</td>
+                                <td colspan="2" style="border:1px solid #000;padding:9px 8px;"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+
+                <!-- Summary Bar -->
+                <div
+                    style="display:flex;justify-content:space-around;margin:22px 0 10px;padding:16px;border:2px solid #000;text-align:center;flex-wrap:wrap;gap:8px;">
+                    <div>
+                        <div style="font-size:12px;color:#666;margin-bottom:4px;">Total Marks</div>
+                        <div style="font-size:1.2rem;font-weight:bold;" id="modalTotalMarks">–</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#666;margin-bottom:4px;">Percentage</div>
+                        <div style="font-size:1.2rem;font-weight:bold;" id="modalPercentage">–</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#666;margin-bottom:4px;">SGPA</div>
+                        <div style="font-size:1.2rem;font-weight:bold;" id="modalSGPA">–</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#666;margin-bottom:4px;">Grade</div>
+                        <div style="font-size:1.2rem;font-weight:bold;color:#4361ee;" id="modalGrade">–</div>
+                    </div>
+                    <div>
+                        <div style="font-size:12px;color:#666;margin-bottom:4px;">Result</div>
+                        <div style="font-size:1.2rem;font-weight:bold;" id="modalStatus">–</div>
+                    </div>
+                </div>
+
+                <!-- Signatures -->
+                <div style="display:flex;justify-content:space-around;margin-top:36px;margin-bottom:10px;">
+                    <div style="text-align:center;">
+                        <div style="border-top:2px solid #000;width:140px;margin-bottom:5px;"></div>
+                        <p style="margin:0;font-size:13px;">Exam Controller</p>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="border-top:2px solid #000;width:140px;margin-bottom:5px;"></div>
+                        <p style="margin:0;font-size:13px;">Principal</p>
+                    </div>
+                    <div style="text-align:center;">
+                        <div style="border-top:2px solid #000;width:140px;margin-bottom:5px;"></div>
+                        <p style="margin:0;font-size:13px;">Registrar</p>
+                    </div>
+                </div>
+                <p style="text-align:center;font-size:11px;color:#888;margin-top:12px;">This is a computer generated
+                    statement. No signature required. Generated on: <span id="modalGenDate"></span></p>
+            </div>
+            <div class="modal-footer"
+                style="padding:16px 24px;border-top:1px solid #e9ecef;display:flex;justify-content:flex-end;gap:10px;">
+                <button onclick="window.print()" class="btn btn-secondary"><i class="fas fa-print"></i> Print</button>
+                <a id="marksheetPrintLink" href="marksheet.php" target="_blank" class="btn btn-primary" style="text-decoration:none;"><i class="fas fa-file-alt"></i> Full Marksheet</a>
+                <button onclick="closeModal()" class="btn btn-outline">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        // Inline script to load real student data from DB
+        document.addEventListener('DOMContentLoaded', async function () {
+            try {
+                // 1. Check session and populate student info
+                const session = await (await fetch('session_check.php', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })).json();
+                if (!session.success || session.role !== 'student') { window.location.href = 'login.html'; return; }
+
+                const firstName = (session.name || 'Student').split(' ')[0];
+                // Use optional chaining so missing elements don't crash the script
+                const _set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+                _set('displayName', session.name);
+                _set('displayRoll', session.roll_number);
+                _set('studentName', session.name);
+                _set('studentRoll', 'Roll: ' + session.roll_number);
+                _set('studentCourse', (session.course_name || 'Course') + ' — Sem ' + (session.semester || 1));
+                _set('welcomeName', firstName);
+                _set('currentSemBadge', 'Semester ' + (session.semester || 1));
+                if (session.department) {
+                    const db = document.getElementById('studentDeptBadge');
+                    if (db) { db.textContent = session.department; db.style.display = 'inline-block'; }
+                }
+
+                // ── Populate semester dropdown ──────────────────────
+                const semSel = document.getElementById('semDropdown');
+                const yearSel = document.getElementById('examYearDropdown');
+                if (semSel) {
+                    const totalSems = parseInt(session.total_semesters || 6);
+                    semSel.innerHTML = '';
+                    for (let i = 1; i <= totalSems; i++) {
+                        const opt = document.createElement('option');
+                        opt.value = i;
+                        opt.textContent = 'Semester ' + i;
+                        if (i === parseInt(session.semester || 1)) opt.selected = true;
+                        semSel.appendChild(opt);
+                    }
+                }
+                if (yearSel) {
+                    const curYear = new Date().getFullYear();
+                    yearSel.innerHTML = '<option value="">Auto-detect</option>';
+                    for (let y = curYear; y >= curYear - 5; y--) {
+                        const opt = document.createElement('option');
+                        opt.value = y; opt.textContent = y;
+                        yearSel.appendChild(opt);
+                    }
+                }
+
+                // Store profile in window for the modal
+                window._studentSession = session;
+
+
+                const nameParts = (session.name || 'S').split(' ');
+                const initials = nameParts.length >= 2
+                    ? (nameParts[0][0] + nameParts[nameParts.length - 1][0]).toUpperCase()
+                    : nameParts[0].substring(0, 2).toUpperCase();
+
+                // Generate unique color from name
+                let hash = 0;
+                for (let i = 0; i < session.name.length; i++) {
+                    hash = session.name.charCodeAt(i) + ((hash << 5) - hash);
+                }
+                const gradients = [
+                    'linear-gradient(135deg, #667eea, #764ba2)',
+                    'linear-gradient(135deg, #f093fb, #f5576c)',
+                    'linear-gradient(135deg, #4facfe, #00f2fe)',
+                    'linear-gradient(135deg, #43e97b, #38f9d7)',
+                    'linear-gradient(135deg, #fa709a, #fee140)',
+                    'linear-gradient(135deg, #a18cd1, #fbc2eb)',
+                    'linear-gradient(135deg, #fccb90, #d57eeb)',
+                    'linear-gradient(135deg, #e0c3fc, #8ec5fc)',
+                    'linear-gradient(135deg, #f5576c, #ff9a9e)',
+                    'linear-gradient(135deg, #667eea, #43e97b)',
+                    'linear-gradient(135deg, #ff9a9e, #fad0c4)',
+                    'linear-gradient(135deg, #a1c4fd, #c2e9fb)',
+                    'linear-gradient(135deg, #d4fc79, #96e6a1)',
+                    'linear-gradient(135deg, #84fab0, #8fd3f4)',
+                    'linear-gradient(135deg, #fbc2eb, #a6c1ee)',
+                ];
+                const avatarEl = document.getElementById('studentAvatar');
+                avatarEl.textContent = initials;
+                avatarEl.style.background = gradients[Math.abs(hash) % gradients.length];
+                avatarEl.style.boxShadow = '0 4px 15px rgba(0,0,0,0.2)';
+
+                // 2. Load semester summary from student_api
+                const semData = await (await fetch('student_api.php?action=get_semester_summary', { headers: { 'X-Requested-With': 'XMLHttpRequest' } })).json();
+                const tbody = document.getElementById('semesterResultsBody');
+
+                if (semData.success && semData.semesters && semData.semesters.length > 0) {
+                    tbody.innerHTML = '';
+                    semData.semesters.forEach(sem => {
+                        const perc  = parseFloat(sem.percentage) || 0;
+                        const sgpa  = sem.sgpa  || (perc / 10).toFixed(2);
+                        const grade = sem.grade  || (perc>=90?'A+':perc>=80?'A':perc>=70?'B+':perc>=60?'B':perc>=50?'C':perc>=40?'D':'F');
+                        const status= sem.status || (sem.fail_count==0?'PASS':'FAIL');
+                        const sc    = status==='PASS'?'#388e3c':'#d32f2f';
+                        tbody.innerHTML += `<tr style="border-bottom:1px solid #f0f4ff;">
+                            <td style="padding:11px 12px;font-weight:600;">Semester ${sem.semester}</td>
+                            <td style="padding:11px 12px;text-align:center;color:#666;">${sem.exam_year}</td>
+                            <td style="padding:11px 12px;text-align:center;">${sem.obtained}/${sem.max_marks}</td>
+                            <td style="padding:11px 12px;text-align:center;font-weight:600;">${perc}%</td>
+                            <td style="padding:11px 12px;text-align:center;font-weight:700;color:#4361ee;">${sgpa}</td>
+                            <td style="padding:11px 12px;text-align:center;"><span style="background:#e8eaf6;color:#3949ab;padding:3px 10px;border-radius:12px;font-size:0.82rem;font-weight:700;">${grade}</span></td>
+                            <td style="padding:11px 12px;text-align:center;"><span style="background:${status==='PASS'?'#e8f5e9':'#ffebee'};color:${sc};padding:3px 12px;border-radius:12px;font-size:0.82rem;font-weight:700;">${status}</span></td>
+                            <td style="padding:11px 12px;text-align:center;">
+                                <button onclick="viewSemByNum(${sem.semester})" style="background:#4361ee;color:#fff;border:none;padding:5px 12px;border-radius:8px;font-size:0.8rem;cursor:pointer;"><i class="fas fa-eye"></i> View</button>
+                                <a href="marksheet.php?semester=${sem.semester}&exam_year=${sem.exam_year}" target="_blank" style="background:#e8f5e9;color:#388e3c;border:none;padding:5px 10px;border-radius:8px;font-size:0.8rem;cursor:pointer;text-decoration:none;display:inline-block;margin-left:4px;"><i class="fas fa-print"></i></a>
+                            </td>
+                        </tr>`;
+                    });
+                    const latest   = semData.semesters[semData.semesters.length - 1];
+                    const cgpa     = semData.cgpa || 0;
+                    const latestSgpa = latest.sgpa || (parseFloat(latest.percentage)/10).toFixed(2);
+                    document.getElementById('statSGPA').textContent    = latestSgpa;
+                    document.getElementById('statCGPA').textContent    = cgpa;
+                    document.getElementById('statSubjects').textContent= semData.semesters.length + ' Sem';
+                    document.getElementById('statStatus').textContent  = latest.status || (latest.fail_count==0?'PASS':'FAIL');
+                    const cgpaBadge = document.getElementById('cgpaBadge');
+                    if (cgpaBadge) cgpaBadge.textContent = 'CGPA: ' + cgpa;
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center;padding:20px;color:#888;">No published results yet. Results will appear once admin publishes them.</td></tr>';
+                    ['statSGPA','statCGPA','statSubjects','statStatus'].forEach(id => _set(id, id==='statSubjects'?'0':'--'));
+                }
+
+                // 3. Load current semester subject details
+                const resSub = await (await fetch('student_api.php?action=get_results&semester=' + (session.semester || 1), { headers: { 'X-Requested-With': 'XMLHttpRequest' } })).json();
+                const grid = document.getElementById('subjectPerformanceGrid');
+                const subjectList = resSub.marks || resSub.results || [];
+
+                if (resSub.success && subjectList.length > 0) {
+                    grid.innerHTML = '';
+                    subjectList.forEach(r => {
+                        const total = (parseInt(r.theory_marks)||0)+(parseInt(r.practical_marks)||0);
+                        const max   = parseInt(r.max_total)||100;
+                        const pct   = Math.round(total/max*100);
+                        const gc    = r.status==='PASS'?'#388e3c':'#d32f2f';
+                        grid.innerHTML += `<div style="background:#f8f9ff;border-radius:14px;padding:16px;border:1.5px solid #e0e6ff;">
+                            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+                                <span style="font-weight:700;font-size:0.88rem;color:#2b2d42;">${r.subject_name}</span>
+                                <span style="background:#e8eaf6;color:#3949ab;padding:2px 9px;border-radius:10px;font-size:0.78rem;font-weight:700;">${r.grade||'--'}</span>
+                            </div>
+                            <div style="font-size:0.78rem;color:#888;margin-bottom:4px;">${r.subject_code}</div>
+                            <div style="display:flex;justify-content:space-between;font-size:0.82rem;margin-bottom:8px;">
+                                <span>Theory: <strong>${r.theory_marks}</strong></span>
+                                <span>Practical: <strong>${r.practical_marks}</strong></span>
+                                <span style="color:${gc};font-weight:700;">${total}/${max}</span>
+                            </div>
+                            <div style="background:#e0e6ff;border-radius:6px;height:6px;"><div style="background:linear-gradient(90deg,#4361ee,#7c3aed);height:6px;border-radius:6px;width:${pct}%;transition:width .6s;"></div></div>
+                            <div style="text-align:right;font-size:0.75rem;color:#888;margin-top:3px;">${pct}%</div>
+                        </div>`;
+                    });
+                } else {
+                    grid.innerHTML = '<p style="text-align:center;padding:20px;color:#888;">No results for this semester yet.</p>';
+                }
+
+                // 4. Build academic timeline
+                const timeline = document.getElementById('academicTimeline');
+                if (semData.success && semData.semesters && semData.semesters.length > 0) {
+                    timeline.innerHTML = '';
+                    // Current semester first
+                    timeline.innerHTML += `<div class="timeline-item"><div class="timeline-marker">${new Date().getFullYear()}</div><div class="timeline-content"><h4>Semester ${session.semester || 1} - Ongoing</h4><p>Current semester in progress</p></div></div>`;
+                    // Previous semesters
+                    [...semData.semesters].reverse().forEach(sem => {
+                        const perc = parseFloat(sem.percentage) || 0;
+                        timeline.innerHTML += `<div class="timeline-item"><div class="timeline-marker">${sem.exam_year}</div><div class="timeline-content"><h4>Semester ${sem.semester} - Completed</h4><p>SGPA: ${(perc / 10).toFixed(1)} | Percentage: ${perc}%</p></div></div>`;
+                    });
+                } else {
+                    timeline.innerHTML = '<p style="text-align:center;padding:20px;color:#888;">No academic history yet.</p>';
+                }
+
+            } catch (err) {
+                console.error('Dashboard load error:', err);
+            }
+        });
+
+        // ── View Profile ──────────────────────────────────
+        async function viewProfile() {
+            // Hide all main sections, show profile
+            document.querySelectorAll('.dashboard-main > .welcome-banner, .dashboard-main > .stats-grid, .dashboard-main > .card, #semResultsSection, #semHistorySection').forEach(el => el.style.display = 'none');
+            document.getElementById('profileSection').style.display = 'block';
+
+            // Highlight sidebar
+            document.querySelectorAll('.sidebar-menu li').forEach(li => li.classList.remove('active'));
+            document.querySelectorAll('.sidebar-menu li')[4].classList.add('active'); // My Profile is 5th item
+
+            try {
+                const res = await fetch('student_api.php?action=get_profile', { headers: { 'X-Requested-With': 'XMLHttpRequest' } });
+                const data = await res.json();
+                if (!data.success || !data.profile) return;
+
+                const p = data.profile;
+                document.getElementById('profileFullName').textContent = p.full_name || '--';
+
+                // ── Dynamic initials avatar in profile section ──
+                const profName = p.full_name || 'Student';
+                const profParts = profName.trim().split(/\s+/);
+                const profInitials = profParts.length >= 2
+                    ? (profParts[0][0] + profParts[profParts.length - 1][0]).toUpperCase()
+                    : profParts[0].substring(0, 2).toUpperCase();
+                let profHash = 0;
+                for (let i = 0; i < profName.length; i++) {
+                    profHash = profName.charCodeAt(i) + ((profHash << 5) - profHash);
+                }
+                const profGradients = [
+                    'linear-gradient(135deg,#667eea,#764ba2)',
+                    'linear-gradient(135deg,#f093fb,#f5576c)',
+                    'linear-gradient(135deg,#4facfe,#00f2fe)',
+                    'linear-gradient(135deg,#43e97b,#38f9d7)',
+                    'linear-gradient(135deg,#fa709a,#fee140)',
+                    'linear-gradient(135deg,#a18cd1,#fbc2eb)',
+                    'linear-gradient(135deg,#fccb90,#d57eeb)',
+                    'linear-gradient(135deg,#e0c3fc,#8ec5fc)',
+                    'linear-gradient(135deg,#f5576c,#ff9a9e)',
+                    'linear-gradient(135deg,#84fab0,#8fd3f4)',
+                    'linear-gradient(135deg,#a1c4fd,#c2e9fb)',
+                    'linear-gradient(135deg,#d4fc79,#96e6a1)',
+                    'linear-gradient(135deg,#fbc2eb,#a6c1ee)',
+                    'linear-gradient(135deg,#ff9a9e,#fad0c4)',
+                    'linear-gradient(135deg,#667eea,#43e97b)'
+                ];
+                const profAvatarEl = document.getElementById('profileAvatar');
+                if (profAvatarEl) {
+                    profAvatarEl.textContent = profInitials;
+                    profAvatarEl.style.background = profGradients[Math.abs(profHash) % profGradients.length];
+                }
+                document.getElementById('profileRollBadge').textContent = p.roll_number || '--';
+                document.getElementById('profileName').textContent = p.full_name || '--';
+                document.getElementById('profileEnrollment').textContent = p.registration_no || p.roll_number || 'Not provided';
+                document.getElementById('profileCourse').textContent = p.course_name ? (p.course_name + (p.course_code ? ' (' + p.course_code + ')' : '')) : '--';
+                document.getElementById('profileEmail').textContent = p.email || 'Not provided';
+                // DOB: guard against null and '0000-00-00'
+                if (p.dob && p.dob !== '0000-00-00' && p.dob !== null) {
+                    document.getElementById('profileDOB').textContent = new Date(p.dob).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' });
+                } else {
+                    document.getElementById('profileDOB').textContent = 'Not provided';
+                }
+                document.getElementById('profileGender').textContent = p.gender || 'Not specified';
+                // Academic Year: enrollment_year + course duration in years
+                if (p.enrollment_year && parseInt(p.enrollment_year) > 2000) {
+                    const dur = Math.ceil(parseInt(p.total_semesters || 6) / 2);
+                    document.getElementById('profileAcademicYear').textContent = p.enrollment_year + ' - ' + (parseInt(p.enrollment_year) + dur);
+                } else {
+                    document.getElementById('profileAcademicYear').textContent = 'Not provided';
+                }
+                document.getElementById('profilePhone').textContent = (p.phone && p.phone.trim()) ? p.phone : 'Not provided';
+                // Current semester
+                if (p.current_semester && parseInt(p.current_semester) > 0) {
+                    document.getElementById('profileSemester').textContent = 'Semester ' + p.current_semester;
+                } else {
+                    document.getElementById('profileSemester').textContent = 'Not provided';
+                }
+            } catch (e) {
+                console.error('Profile load error:', e);
+            }
+        }
+
+        // ── View Semester Result ───────────────────────────────
+        async function viewSemesterResult() {
+            const semSel = document.getElementById('semDropdown');
+            const yearSel = document.getElementById('examYearDropdown');
+            const semester = semSel ? semSel.value : 1;
+            const year = yearSel ? yearSel.value : '';
+
+            const btn = document.getElementById('viewMarksheetBtn');
+            if (btn) { btn.disabled = true; btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...'; }
+
+            try {
+                // Fetch results + profile in parallel
+                const params = { action: 'get_results', semester };
+                if (year) params.exam_year = year;
+                window._currentSemester = semester;
+                const [resData, profData] = await Promise.all([
+                    fetch('student_api.php?' + new URLSearchParams(params), { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(r => r.json()),
+                    fetch('student_api.php?action=get_profile', { headers: { 'X-Requested-With': 'XMLHttpRequest' } }).then(r => r.json())
+                ]);
+
+                if (!resData.success) {
+                    alert('No published results found for Semester ' + semester + '. Please check with admin.');
+                    return;
+                }
+
+                const p = profData.profile || {};
+                const s = resData.summary || {};
+
+                // Fill modal student info
+                const _set = (id, val) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+                _set('modalSemesterTitle', semester);
+                _set('modalStudentName', p.full_name || window._studentSession?.name || '–');
+                _set('modalRollNo', p.roll_number || window._studentSession?.roll_number || '–');
+                _set('modalFatherName', p.father_name || '–');
+                _set('modalRegNo', p.registration_no || '–');
+                _set('modalCourse', (p.course_name || '') + (p.course_code ? ' (' + p.course_code + ')' : ''));
+                _set('modalExamYear', resData.marks?.[0]?.exam_year || year || new Date().getFullYear());
+                _set('modalGenDate', new Date().toLocaleDateString('en-IN'));
+
+                // Fill marks table
+                const tbody = document.getElementById('dynamicMarksBody');
+                if (tbody) {
+                    tbody.innerHTML = resData.marks.map((m, i) => `
+                    <tr style="${m.status === 'FAIL' ? 'background:#fff5f5;' : ''}">
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;">${i + 1}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;">${m.subject_code}</td>
+                        <td style="border:1px solid #ccc;padding:8px;">${m.subject_name}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;">${m.attendance_status === 'ABSENT' ? '<span style="color:#f57c00;font-weight:600">AB</span>' : m.theory_marks}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;">${m.attendance_status === 'ABSENT' ? '<span style="color:#f57c00;font-weight:600">AB</span>' : m.practical_marks}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;font-weight:600;">${m.attendance_status === 'ABSENT' ? 0 : m.total_marks}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;">${m.max_total}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;font-weight:700;color:#4361ee;">${m.grade || '–'}</td>
+                        <td style="border:1px solid #ccc;padding:8px;text-align:center;font-weight:700;color:${m.status === 'PASS' ? '#388e3c' : '#d32f2f'};">${m.status}</td>
+                    </tr>`).join('');
+                }
+
+                // Summary
+                _set('modalGrandTotal', s.total_obtained);
+                _set('modalGrandMax', s.total_max);
+                _set('modalTotalMarks', s.total_obtained + '/' + s.total_max);
+                _set('modalPercentage', s.percentage + '%');
+                _set('modalSGPA', s.sgpa);
+                _set('modalGrade', s.grade);
+                const statusEl = document.getElementById('modalStatus');
+                if (statusEl) { statusEl.textContent = s.status; statusEl.style.color = s.status === 'PASS' ? '#388e3c' : '#d32f2f'; }
+
+                // Show modal + update Full Marksheet link
+                const modal = document.getElementById('resultModal');
+                if (modal) modal.style.display = 'flex';
+                const msLink = document.getElementById('marksheetPrintLink');
+                if (msLink) {
+                    const ey = resData.marks?.[0]?.exam_year || year || new Date().getFullYear();
+                    msLink.href = `marksheet.php?semester=${semester}&exam_year=${ey}`;
+                }
+
+            } catch (err) {
+                alert('Error loading results: ' + err.message);
+            } finally {
+                if (btn) { btn.disabled = false; btn.innerHTML = '<i class="fas fa-eye"></i> View Marksheet'; }
+            }
+        }
+
+        // Shortcut: click View in semester table → open modal
+        function viewSemByNum(semNum) {
+            const semSel = document.getElementById('semDropdown');
+            if (semSel) { semSel.value = semNum; }
+            viewSemesterResult();
+        }
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - ERMS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .login-page {
+            position: relative;
+            background: none !important;
+        }
+
+        .login-page::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            z-index: -2;
+        }
+
+        .login-page::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: -1;
+        }
+
+        .login-card {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+
+<body class="login-page">
+    <!-- Simple Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="logo-text">
+                    <span>ERMS</span>
+                    <small>Exam Result System</small>
+                </div>
+            </a>
+            <a href="index.html" class="back-home"><i class="fas fa-arrow-left"></i> Back to Home</a>
+        </div>
+    </nav>
+
+    <!-- Login Container -->
+    <div class="login-wrapper">
+        <div class="login-card">
+            <div class="login-header">
+                <i class="fas fa-graduation-cap"></i>
+                <h2>Welcome to ERMS</h2>
+                <p>Please login to continue</p>
+            </div>
+
+            <!-- Single Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <!-- <form id="loginForm" method="POST" action="login.php"></form> -->
+                <div class="form-group">
+                    <label><i class="fas fa-user"></i> Username / Roll Number</label>
+                    <input type="text" id="username" placeholder="Enter username or roll number" required>
+                </div>
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Password</label>
+                    <div class="password-input">
+                        <input type="password" id="password" placeholder="Enter your password" required>
+                        <i class="fas fa-eye toggle-password" onclick="togglePassword('password')"></i>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-login"
+                    style="width: 100%; padding: 14px; font-size: 1.1rem; justify-content: center;">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <p id="loginMsg" style="text-align:center;
+                margin-top: 10px; font-weight: 600;"></p>
+
+            </form>
+
+            <div class="login-footer">
+                <p>Don't have an account? <a href="#">Contact Administrator</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+    <script>
+        async function handleLogin(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const msgEl = document.getElementById('loginMsg');
+            const btn = event.submitter || document.querySelector('.btn-login');
+
+            btn.disabled = true;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Logging in...';
+
+            const form = new FormData();
+            form.append('username', username);
+            form.append('password', password);
+
+            try {
+                const res = await fetch('login.php', { method: 'POST', body: form });
+                const result = await res.json();
+
+                if (result.success) {
+                    msgEl.style.color = '#4caf50';
+                    msgEl.textContent = 'Login successful! Redirecting...';
+                    setTimeout(() => window.location.href = result.redirect, 800);
+                } else {
+                    msgEl.style.color = '#f44336';
+                    msgEl.textContent = result.message;
+                    btn.disabled = false;
+                    btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+                }
+            } catch (e) {
+                msgEl.style.color = '#f44336';
+                msgEl.textContent = 'Cannot connect. Is XAMPP running?';
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Login';
+            }
+        }
+    </script>
+</body>
+
+</html>

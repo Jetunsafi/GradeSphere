@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GradeSphere - Exam Result Management System</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="logo-text">
+                    <span>GradeSphere</span>
+                    <small>Exam Result System</small>
+                </div>
+            </a>
+
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#how-it-works">How It Works</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="check-result.html" class="btn-outline"><i class="fas fa-search"></i> Check Result</a></li>
+                <li><a href="login.html" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <!-- <section class="hero">
+        <div class="hero-content">
+            <h1>Exam Result Management System</h1>
+            <p>Access your examination results instantly from anywhere. Secure, fast, and reliable result checking system for students and administrators.</p>
+            <div class="hero-buttons">
+                <a href="check-result.html" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Check Your Result
+                </a> -->
+    <!-- <a href="login.html" class="btn btn-secondary">
+                    <i class="fas fa-lock"></i> Admin Login
+                </a> -->
+    <!-- </div>
+            <div class="hero-stats">
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">5000+</span>
+                    <span class="hero-stat-label">Students</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">50+</span>
+                    <span class="hero-stat-label">Courses</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">200+</span>
+                    <span class="hero-stat-label">Subjects</span>
+                </div>
+                <div class="hero-stat-item">
+                    <span class="hero-stat-number">10000+</span>
+                    <span class="hero-stat-label">Results</span>
+                </div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <img src="benefits_img.svg" alt="ERMS Illustration">
+        </div>
+    </section> -->
+
+    <!-- Hero Section -->
+    <section class="hero"
+        style="position: relative; background: none; overflow: hidden; min-height: 90vh; display: flex; align-items: center;">
+        <!-- Background Image -->
+        <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0;">
+            <img src="https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                style="width: 100%; height: 100%; object-fit: cover;">
+            <!-- Dark Overlay -->
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7);">
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="container" style="position: relative; z-index: 1; display: flex; align-items: center; gap: 50px;">
+            <div class="hero-content" style="flex: 1; max-width: 600px;">
+                <h1
+                    style="font-size: 3rem; margin-bottom: 20px; color: white; background: none; -webkit-text-fill-color: white;">
+                    Exam Result Management System</h1>
+                <p style="font-size: 1.2rem; color: rgba(255,255,255,0.9); margin-bottom: 30px;">Access your examination
+                    results instantly from anywhere. Secure, fast, and reliable result checking system for students and
+                    administrators.</p>
+                <div class="hero-buttons" style="display: flex; gap: 15px; margin-bottom: 40px;">
+                    <a href="check-result.html" class="btn btn-primary"
+                        style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 14px 30px; border-radius: 8px; text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-search"></i> Check Your Result
+                    </a>
+                </div>
+                <div class="hero-stats" style="display: flex; gap: 40px;">
+                    <div class="hero-stat-item" style="text-align: center;">
+                        <span class="hero-stat-number" id="total_students_v"
+                            style="display: block; font-size: 2rem; font-weight: bold; color: white;">...</span>
+                        <span class="hero-stat-label"
+                            style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Students</span>
+                    </div>
+                    <div class="hero-stat-item" style="text-align: center;">
+                        <span class="hero-stat-number" id="total_courses_v"
+                            style="display: block; font-size: 2rem; font-weight: bold; color: white;">...</span>
+                        <span class="hero-stat-label"
+                            style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Courses</span>
+                    </div>
+                    <div class="hero-stat-item" style="text-align: center;">
+                        <span class="hero-stat-number" id="total_subjects_v"
+                            style="display: block; font-size: 2rem; font-weight: bold; color: white;">...</span>
+                        <span class="hero-stat-label"
+                            style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Subjects</span>
+                    </div>
+                    <div class="hero-stat-item" style="text-align: center;">
+                        <span class="hero-stat-number" id="total_results_v"
+                            style="display: block; font-size: 2rem; font-weight: bold; color: white;">...</span>
+                        <span class="hero-stat-label"
+                            style="color: rgba(255,255,255,0.8); font-size: 0.9rem;">Results</span>
+                    </div>
+                </div>
+            </div>
+
+    </section>
+
+    <!-- Features Section -->
+
+    <!-- Features Section -->
+    <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <!-- Feature 1: Student Portal -->
+                <div class="feature-card"
+                    style="padding: 0; overflow: hidden; border-radius: 16px; display: flex; flex-direction: column; height: 100%;">
+                    <img src="pic1.jpg.jpeg" alt="Student Portal"
+                        style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                    <div style="padding: 25px 20px 20px; text-align: center; flex-grow: 1;">
+                        <div class="feature-icon"
+                            style="margin-top: -45px; margin-bottom: 15px; width: 70px; height: 70px; margin-left: auto; margin-right: auto;">
+                            <i class="fas fa-user-graduate"></i>
+                        </div>
+                        <h3>Student Portal</h3>
+                        <p>Secure login for students to view their results, download mark sheets, and track academic
+                            progress across all semesters.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Admin Dashboard -->
+                <div class="feature-card"
+                    style="padding: 0; overflow: hidden; border-radius: 16px; display: flex; flex-direction: column; height: 100%;">
+                    <img src="pic2.jpg.jpeg" alt="Admin Dashboard"
+                        style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                    <div style="padding: 25px 20px 20px; text-align: center; flex-grow: 1;">
+                        <div class="feature-icon"
+                            style="margin-top: -45px; margin-bottom: 15px; width: 70px; height: 70px; margin-left: auto; margin-right: auto;">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                        </div>
+                        <h3>Admin Dashboard</h3>
+                        <p>Comprehensive dashboard for administrators to manage students, subjects, enter marks, and
+                            publish results.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Auto Calculation -->
+                <div class="feature-card"
+                    style="padding: 0; overflow: hidden; border-radius: 16px; display: flex; flex-direction: column; height: 100%;">
+                    <img src="pic3.jpg.jpeg" alt="Auto Calculation"
+                        style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                    <div style="padding: 25px 20px 20px; text-align: center; flex-grow: 1;">
+                        <div class="feature-icon"
+                            style="margin-top: -45px; margin-bottom: 15px; width: 70px; height: 70px; margin-left: auto; margin-right: auto;">
+                            <i class="fas fa-calculator"></i>
+                        </div>
+                        <h3>Auto Calculation</h3>
+                        <p>Automatic calculation of totals, percentages, grades, and pass/fail status based on
+                            predefined criteria.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 4: Download Results -->
+                <div class="feature-card"
+                    style="padding: 0; overflow: hidden; border-radius: 16px; display: flex; flex-direction: column; height: 100%;">
+                    <img src="photos4.jpg.jpeg" alt="Download Results"
+                        style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                    <div style="padding: 25px 20px 20px; text-align: center; flex-grow: 1;">
+                        <div class="feature-icon"
+                            style="margin-top: -45px; margin-bottom: 15px; width: 70px; height: 70px; margin-left: auto; margin-right: auto;">
+                            <i class="fas fa-file-pdf"></i>
+                        </div>
+                        <h3>Download Results</h3>
+                        <p>Download results in PDF format with official college branding, signatures, and complete mark
+                            sheets.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 5: Multiple Courses -->
+                <div class="feature-card"
+                    style="padding: 0; overflow: hidden; border-radius: 16px; display: flex; flex-direction: column; height: 100%;">
+                    <img src="pic5.jpg.jpeg" alt="Multiple Courses"
+                        style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                    <div style="padding: 25px 20px 20px; text-align: center; flex-grow: 1;">
+                        <div class="feature-icon"
+                            style="margin-top: -45px; margin-bottom: 15px; width: 70px; height: 70px; margin-left: auto; margin-right: auto;">
+                            <i class="fas fa-layer-group"></i>
+                        </div>
+                        <h3>Multiple Courses</h3>
+                        <p>Support for various courses like BCA, MCA, B.Tech with semester-wise subject management.</p>
+                    </div>
+                </div>
+
+                <!-- Feature 6: Secure Access -->
+                <div class="feature-card"
+                    style="padding: 0; overflow: hidden; border-radius: 16px;display: flex; flex-direction: column; height: 100%;">
+                    <img src="pic6.jpg.jpeg" alt="Secure Access"
+                        style="width: 100%; height: 200px; object-fit: cover; display: block;">
+                    <div style="padding: 25px 20px 20px; text-align: center; flex-grow: 1;">
+                        <div class="feature-icon"
+                            style="margin-top: -45px; margin-bottom: 15px; width: 70px; height: 70px; margin-left: auto; margin-right: auto;">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Secure Access</h3>
+                        <p>Role-based access control ensuring data security and privacy for students and administrators.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- <section id="features" class="features">
+        <div class="container">
+            <h2 class="section-title">Key Features</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h3>Student Portal</h3>
+                    <p>Secure login for students to view their results, download mark sheets, and track academic progress across all semesters.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chalkboard-teacher"></i>
+                    </div>
+                    <h3>Admin Dashboard</h3>
+                    <p>Comprehensive dashboard for administrators to manage students, subjects, enter marks, and publish results.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Auto Calculation</h3>
+                    <p>Automatic calculation of totals, percentages, grades, and pass/fail status based on predefined criteria.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-file-pdf"></i>
+                    </div>
+                    <h3>Download Results</h3>
+                    <p>Download results in PDF format with official college branding, signatures, and complete mark sheets.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h3>Multiple Courses</h3>
+                    <p>Support for various courses like BCA, MCA, B.Tech with semester-wise subject management.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Access</h3>
+                    <p>Role-based access control ensuring data security and privacy for students and administrators.</p>
+                </div>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <div class="steps-container">
+                <div class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Admin Adds Data</h3>
+                        <p>Admin adds students, courses, subjects, and enters marks for each semester</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>System Processes</h3>
+                        <p>System automatically calculates totals, percentages, and grades</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Student Login</h3>
+                        <p>Student logs in using roll number and password to access results</p>
+                    </div>
+                </div>
+                <div class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>View & Download</h3>
+                        <p>Student views detailed results and downloads for future reference</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+
+    <!-- About Section with Slideshow -->
+    <section id="about" class="about"
+        style="padding: 40px 20px; position: relative; overflow: hidden; background: #f8faff;">
+        <!-- Main Container with max-width -->
+        <div
+            style="max-width: 1200px; margin: 0 auto; position: relative; border-radius: 30px; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.15);">
+
+            <!-- Slideshow Container -->
+            <div style="position: relative; width: 100%; height: 600px;">
+                <!-- Slideshow Images -->
+                <div class="about-slide"
+                    style="position: absolute; width: 100%; height: 100%; opacity: 1; transition: opacity 1s ease; z-index: 1;">
+                    <img src="https://images.pexels.com/photos/207691/pexels-photo-207691.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="about-slide"
+                    style="position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease; z-index: 1;">
+                    <img src="https://images.pexels.com/photos/256455/pexels-photo-256455.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="about-slide"
+                    style="position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease; z-index: 1;">
+                    <img src="https://images.pexels.com/photos/2954199/pexels-photo-2954199.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="about-slide"
+                    style="position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease; z-index: 1;">
+                    <img src="https://images.pexels.com/photos/5212345/pexels-photo-5212345.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+                <div class="about-slide"
+                    style="position: absolute; width: 100%; height: 100%; opacity: 0; transition: opacity 1s ease; z-index: 1;">
+                    <img src="https://images.pexels.com/photos/267885/pexels-photo-267885.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2"
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                </div>
+
+                <!-- Dark Overlay -->
+                <div
+                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); z-index: 2;">
+                </div>
+
+                <!-- Content -->
+                <div
+                    style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 3; width: 90%; max-width: 800px; text-align: center; color: white; padding: 40px;">
+                    <h2 style="font-size: 3rem; margin-bottom: 20px; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">About
+                        ERMS</h2>
+                    <p
+                        style="font-size: 1.2rem; line-height: 1.8; margin-bottom: 30px; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
+                        Exam Result Management System (ERMS) is a comprehensive web-based solution designed to
+                        streamline the process of result publication and access. It eliminates the traditional method of
+                        result notice boards and provides instant online access to examination results.</p>
+                    <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 15px;">
+                        <div
+                            style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); padding: 12px 25px; border-radius: 50px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i>
+                            <span>100% Online System</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); padding: 12px 25px; border-radius: 50px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i>
+                            <span>Real-time Processing</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); padding: 12px 25px; border-radius: 50px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i>
+                            <span>Secure Authentication</span>
+                        </div>
+                        <div
+                            style="background: rgba(255,255,255,0.2); backdrop-filter: blur(5px); padding: 12px 25px; border-radius: 50px; display: flex; align-items: center; gap: 8px; border: 1px solid rgba(255,255,255,0.3);">
+                            <i class="fas fa-check-circle" style="color: #4ade80;"></i>
+                            <span>Printable Results</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        // Your existing slideshow script
+        (function () {
+            const slides = document.getElementsByClassName("about-slide");
+
+            if (slides.length === 0) {
+                console.log("No slides found");
+                return;
+            }
+
+            let currentIndex = 0;
+
+            for (let i = 0; i < slides.length; i++) {
+                slides[i].style.opacity = i === 0 ? "1" : "0";
+            }
+
+            function nextSlide() {
+                slides[currentIndex].style.opacity = "0";
+                currentIndex = (currentIndex + 1) % slides.length;
+                slides[currentIndex].style.opacity = "1";
+            }
+
+            setInterval(nextSlide, 4000);
+        })();
+    </script>
+
+
+    <!-- <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <h2>About ERMS</h2>
+                <p>Exam Result Management System (ERMS) is a comprehensive web-based solution designed to streamline the process of result publication and access. It eliminates the traditional method of result notice boards and provides instant online access to examination results.</p>
+                <div class="about-highlights">
+                    <div class="highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>100% Online System</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Real-time Result Processing</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Secure Authentication</span>
+                    </div>
+                    <div class="highlight">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Printable Results</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+   -->
+
+    <!-- Meet the Admin Staff Section - Professional & Aesthetic -->
+    <section class="admin-team">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet the Admin Staff</h2>
+                <p>Dedicated professionals ensuring smooth result management</p>
+            </div>
+
+            <div class="team-grid">
+                <!-- Member 1 - Male -->
+                <div class="team-card">
+                    <div class="card-icon male">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Jaydeep Rathod</h3>
+                    <span class="role">Admin Officer</span>
+                    <p class="bio">Handles examination schedules, result publishing, and student records with precision.
+                    </p>
+                </div>
+
+                <!-- Member 2 - Female (middle) -->
+                <div class="team-card">
+                    <div class="card-icon female">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Divya Mudaliar</h3>
+                    <span class="role">Student Support</span>
+                    <p class="bio">Assists with result queries, mark sheet corrections, and revaluation processes.</p>
+                </div>
+
+                <!-- Member 3 - Male -->
+                <div class="team-card">
+                    <div class="card-icon male">
+                        <i class="fas fa-user-tie"></i>
+                    </div>
+                    <h3>Nil Mevada</h3>
+                    <span class="role">Account Manager</span>
+                    <p class="bio">Manages online result portal, login issues, and technical support efficiently.</p>
+                </div>
+            </div>
+
+            <div class="meeting-note">
+                <i class="fas fa-clock"></i>
+                <span>You can meet our staff for any queries from Monday to Friday (10:00 AM – 5:00 PM)</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What People Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>ERMS has transformed how we manage results. Students can access their marks instantly without
+                            waiting for days.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Dr. Sharma">
+                        <div>
+                            <h4>Dr. Rajesh Sharma</h4>
+                            <p>Principal, University Institute</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>The system is very user-friendly. I can check my results on my phone anytime, anywhere.</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya Singh">
+                        <div>
+                            <h4>Priya Singh</h4>
+                            <p>BCA Student</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-content">
+                        <i class="fas fa-quote-left"></i>
+                        <p>Managing marks for 500+ students has become so easy with ERMS. Highly recommended!</p>
+                    </div>
+                    <div class="testimonial-author">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Prof. Verma">
+                        <div>
+                            <h4>Prof. Anil Verma</h4>
+                            <p>Exam Controller</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action
+    <section class="cta">
+        <div class="container">
+            <h2>Ready to Check Your Results?</h2>
+            <p>Login now to access your examination results instantly</p>
+            <div class="cta-buttons">
+                <a href="login.html" class="btn btn-primary btn-large">Student Login</a>
+                <a href="check-result.html" class="btn btn-outline-light btn-large">Quick Result Check</a>
+            </div>
+        </div>
+    </section> -->
+    <!-- FAQ Section -->
+    <!-- <section class="faq-section">
+    <div class="container">
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <div class="faq-grid">
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>How can I check my result?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Simply click on "Check Result" button, enter your roll number and select your course to view your result instantly.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Can I download my result?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, after viewing your result, you can download it as PDF or take a printout directly from the result page.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>What if I forget my password?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Contact your class teacher or admin office to reset your password. They will provide you with new credentials.</p>
+                </div>
+            </div>
+            
+            <div class="faq-item">
+                <div class="faq-question" onclick="toggleFAQ(this)">
+                    <h3>Is my result secure?</h3>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="faq-answer">
+                    <p>Yes, all results are password protected and only accessible with valid roll number and password.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section> -->
+
+    <!-- FAQ Section -->
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-grid">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>How can I check my result?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Simply click on "Check Result" button, enter your roll number and select your course to view
+                            your result instantly.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>Can I download my result?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, after viewing your result, you can download it as PDF or take a printout directly from
+                            the result page.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>What if I forget my password?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Contact your class teacher or admin office to reset your password. They will provide you with
+                            new credentials.</p>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>Is my result secure?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, all results are password protected and only accessible with valid roll number and
+                            password.</p>
+                    </div>
+                </div>
+
+                <!-- New FAQ 5 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>When are results published?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Results are typically published within 15-20 days after the examination. You'll receive a
+                            notification once they're available.</p>
+                    </div>
+                </div>
+
+                <!-- New FAQ 6 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>Can I get a physical copy of my marksheet?</h3>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        <p>Yes, you can collect your original marksheet from the college administration office after the
+                            results are declared.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h4>Address</h4>
+                            <p>University Institute of Technology<br>Burdwan, West Bengal - 713104</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+91 12345 67890</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h4>Email</h4>
+                            <p>support@erms.edu</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-clock"></i>
+                        <div>
+                            <h4>Working Hours</h4>
+                            <p>Monday - Friday: 9:00 AM - 5:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <textarea placeholder="Your Message" rows="5" required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-graduation-cap"></i>
+                        <span>ERMS</span>
+                    </div>
+                    <p>Exam Result Management System providing secure and efficient result access for students and
+                        institutions since 2020.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#how-it-works">How It Works</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Student Links</h4>
+                    <ul>
+                        <li><a href="login.html">Student Login</a></li>
+                        <li><a href="check-result.html">Check Result</a></li>
+                        <li><a href="#">Download Result</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Admin Links</h4>
+                    <ul>
+                        <li><a href="login.html">Admin Login</a></li>
+                        <li><a href="#">Manage Students</a></li>
+                        <li><a href="#">Manage Subjects</a></li>
+                        <li><a href="#">Enter Marks</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Exam Result Management System. All rights reserved.</p>
+                <div class="footer-bottom-links">
+                    <a href="#">Privacy Policy</a>
+                    <a href="#">Terms of Service</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+</body>
+
+</html>

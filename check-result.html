@@ -1,0 +1,211 @@
+Check Result 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check Result - ERMS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <div class="logo-text">
+                    <span>ERMS</span>
+                    <small>Exam Result System</small>
+                </div>
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="login.html" class="btn-login"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+            </ul>
+            <div class="hamburger" onclick="toggleMenu()">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
+    <div class="page-header-simple">
+        <h1>Check Your Result</h1>
+        <p>Enter your details to view your examination result</p>
+    </div>
+
+    <div class="container">
+        <div class="check-result-card">
+            <form id="checkResultForm" onsubmit="checkResult(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-id-card"></i> Roll Number</label>
+                        <input type="text" id="checkRollNo" placeholder="Enter your roll number" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar"></i> Select Course</label>
+                        <select id="checkCourse" required>
+                            <option value="">Choose Course</option>
+                            <option value="BCA">BCA</option>
+                            <option value="MCA">MCA</option>
+                            <option value="B.Tech">B.Tech</option>
+                            <option value="MBA">MBA</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-layer-group"></i> Select Semester</label>
+                        <select id="checkSemester" required>
+                            <option value="">Choose Semester</option>
+                            <option value="1">Semester 1</option>
+                            <option value="2">Semester 2</option>
+                            <option value="3">Semester 3</option>
+                            <option value="4">Semester 4</option>
+                            <option value="5">Semester 5</option>
+                            <option value="6">Semester 6</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar-alt"></i> Examination Year</label>
+                        <select id="checkYear" required>
+                            <option value="">Select Year</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary btn-large btn-block">
+                    <i class="fas fa-search"></i> View Result
+                </button>
+            </form>
+        </div>
+
+        <!-- Result Display (Hidden by default) -->
+        <div id="resultDisplay" class="result-display" style="display: none;">
+            <div class="result-print-area">
+                <div class="college-header">
+                    <h2>UNIVERSITY INSTITUTE OF TECHNOLOGY</h2>
+                    <p>Burdwan, West Bengal - 713104</p>
+                    <hr>
+                    <h3>STATEMENT OF MARKS</h3>
+                    <p id="displayExamDetails">Examination: December 2023 | Semester <span id="displaySemester">4</span></p>
+                </div>
+                
+                <div class="student-details">
+                    <div class="details-row">
+                        <div class="detail-item">
+                            <label>Student Name:</label>
+                            <span id="displayStudentName">John Doe</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Roll Number:</label>
+                            <span id="displayRollNo">STU001</span>
+                        </div>
+                    </div>
+                    <div class="details-row">
+                        <div class="detail-item">
+                            <label>Course:</label>
+                            <span id="displayCourse">BCA</span>
+                        </div>
+                        <div class="detail-item">
+                            <label>Semester:</label>
+                            <span id="displaySemesterNo">4</span>
+                        </div>
+                    </div>
+                </div>
+
+                <table class="marks-table">
+                    <thead>
+                        <tr>
+                            <th>Subject Code</th>
+                            <th>Subject Name</th>
+                            <th>Theory</th>
+                            <th>Practical</th>
+                            <th>Total</th>
+                            <th>Max Marks</th>
+                            <th>Grade</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="displayMarksTable">
+                        <tr>
+                            <td>BCA401</td>
+                            <td>Data Structures</td>
+                            <td>75</td>
+                            <td>20</td>
+                            <td>95</td>
+                            <td>100</td>
+                            <td>A+</td>
+                            <td><span class="badge pass">PASS</span></td>
+                        </tr>
+                        <tr>
+                            <td>BCA402</td>
+                            <td>Database Management</td>
+                            <td>68</td>
+                            <td>18</td>
+                            <td>86</td>
+                            <td>100</td>
+                            <td>A</td>
+                            <td><span class="badge pass">PASS</span></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="4"><strong>Grand Total</strong></td>
+                            <td><strong>181</strong></td>
+                            <td><strong>200</strong></td>
+                            <td colspan="2"></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <div class="result-summary">
+                    <div class="summary-item">
+                        <span class="summary-label">Total Marks</span>
+                        <span class="summary-value">181/200</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Percentage</span>
+                        <span class="summary-value">90.5%</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Grade</span>
+                        <span class="summary-value grade">A+</span>
+                    </div>
+                    <div class="summary-item">
+                        <span class="summary-label">Status</span>
+                        <span class="summary-value pass">PASS</span>
+                    </div>
+                </div>
+
+                <div class="result-footer">
+                    <div class="signature">
+                        <p>_________________</p>
+                        <p>Exam Controller</p>
+                    </div>
+                    <div class="signature">
+                        <p>_________________</p>
+                        <p>Principal</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <button onclick="downloadResultPDF()" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Download PDF
+                </button>
+                <button onclick="window.print()" class="btn btn-secondary">
+                    <i class="fas fa-print"></i> Print
+                </button>
+                <button onclick="checkAnother()" class="btn btn-outline">
+                    <i class="fas fa-redo"></i> Check Another
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

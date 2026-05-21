@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Result - ERMS</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            background: #f4f7fc;
+            font-family: 'Times New Roman', serif;
+        }
+        .result-wrapper {
+            max-width: 1000px;
+            margin: 30px auto;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 10px;
+            padding: 40px;
+        }
+        .university-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .university-header h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #000;
+            margin: 0 0 5px;
+            text-transform: uppercase;
+        }
+        .university-header p {
+            font-size: 14px;
+            color: #333;
+            margin: 2px 0;
+        }
+        .university-header hr {
+            width: 200px;
+            margin: 15px auto;
+            border: 2px solid #000;
+        }
+        .university-header h2 {
+            font-size: 20px;
+            font-weight: bold;
+            margin: 15px 0 5px;
+        }
+        .info-box {
+            border: 2px solid #000;
+            padding: 15px;
+            margin: 25px 0;
+        }
+        .info-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .info-table td {
+            padding: 8px;
+            width: 50%;
+        }
+        .marks-table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 2px solid #000;
+            margin: 20px 0;
+        }
+        .marks-table th {
+            border: 1px solid #000;
+            padding: 10px 5px;
+            background: #e0e0e0;
+            text-align: center;
+            font-weight: bold;
+        }
+        .marks-table td {
+            border: 1px solid #000;
+            padding: 8px 5px;
+            text-align: center;
+        }
+        .marks-table td:nth-child(3) {
+            text-align: left;
+        }
+        .summary-box {
+            display: flex;
+            justify-content: space-between;
+            border: 2px solid #000;
+            padding: 20px;
+            margin: 30px 0;
+        }
+        .summary-item {
+            text-align: center;
+            flex: 1;
+        }
+        .summary-label {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .summary-value {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .grade-highlight {
+            color: #f72585;
+        }
+        .pass-highlight {
+            color: #28a745;
+            font-weight: bold;
+        }
+        .signatures {
+            display: flex;
+            justify-content: space-around;
+            margin: 50px 0 20px;
+        }
+        .signature {
+            text-align: center;
+        }
+        .signature-line {
+            border-top: 2px solid #000;
+            width: 150px;
+            margin-bottom: 5px;
+        }
+        .declaration {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 11px;
+            color: #666;
+        }
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 500;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #4361ee, #3a0ca3);
+            color: white;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #f72585, #b5179e);
+            color: white;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #4361ee;
+            color: #4361ee;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="result-wrapper">
+        <!-- University Header -->
+        <div class="university-header">
+            <h1>UNIVERSITY INSTITUTE OF TECHNOLOGY</h1>
+            <p>Burdwan, West Bengal - 713104</p>
+            <p>Established 2000 | NAAC Accredited 'A' Grade</p>
+            <hr>
+            <h2>DETAILED STATEMENT OF MARKS</h2>
+            <p><strong>Bachelor of Computer Applications (BCA) - Semester 4</strong></p>
+            <p>Examination: December 2023 | Roll No: STU001</p>
+        </div>
+
+        <!-- Student Information -->
+        <div class="info-box">
+            <table class="info-table">
+                <tr>
+                    <td><strong>Student Name:</strong> John Doe</td>
+                    <td><strong>Roll Number:</strong> STU001</td>
+                </tr>
+                <tr>
+                    <td><strong>Father's Name:</strong> Robert Doe</td>
+                    <td><strong>Registration No.:</strong> REG2021001</td>
+                </tr>
+                <tr>
+                    <td><strong>Mother's Name:</strong> Jane Doe</td>
+                    <td><strong>Course:</strong> BCA (2021-2024)</td>
+                </tr>
+            </table>
+        </div>
+
+        <!-- Subject-wise Marks -->
+        <h3 style="font-size: 18px; margin: 20px 0 10px;">Subject-wise Marks</h3>
+        <table class="marks-table">
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Subject Code</th>
+                    <th>Subject Name</th>
+                    <th>Theory</th>
+                    <th>Practical</th>
+                    <th>Total</th>
+                    <th>Max</th>
+                    <th>Grade</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>1</td>
+                    <td>BCA401</td>
+                    <td>Data Structures</td>
+                    <td>75</td>
+                    <td>20</td>
+                    <td>95</td>
+                    <td>100</td>
+                    <td>A+</td>
+                    <td class="pass-highlight">PASS</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>BCA402</td>
+                    <td>Database Management Systems</td>
+                    <td>68</td>
+                    <td>18</td>
+                    <td>86</td>
+                    <td>100</td>
+                    <td>A</td>
+                    <td class="pass-highlight">PASS</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>BCA403</td>
+                    <td>Operating Systems</td>
+                    <td>72</td>
+                    <td>15</td>
+                    <td>87</td>
+                    <td>100</td>
+                    <td>A</td>
+                    <td class="pass-highlight">PASS</td>
+                </tr>
+                <tr>
+                    <td>4</td>
+                    <td>BCA404</td>
+                    <td>Computer Networks</td>
+                    <td>70</td>
+                    <td>18</td>
+                    <td>88</td>
+                    <td>100</td>
+                    <td>A</td>
+                    <td class="pass-highlight">PASS</td>
+                </tr>
+                <tr>
+                    <td>5</td>
+                    <td>BCA405</td>
+                    <td>Web Technologies</td>
+                    <td>78</td>
+                    <td>20</td>
+                    <td>98</td>
+                    <td>100</td>
+                    <td>A+</td>
+                    <td class="pass-highlight">PASS</td>
+                </tr>
+                <tr>
+                    <td>6</td>
+                    <td>BCA406</td>
+                    <td>Software Engineering</td>
+                    <td>65</td>
+                    <td>17</td>
+                    <td>82</td>
+                    <td>100</td>
+                    <td>B+</td>
+                    <td class="pass-highlight">PASS</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5" style="text-align: right; font-weight: bold;">Grand Total</td>
+                    <td style="font-weight: bold;">536</td>
+                    <td style="font-weight: bold;">600</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <!-- Summary -->
+        <div class="summary-box">
+            <div class="summary-item">
+                <div class="summary-label">Total Marks</div>
+                <div class="summary-value">536/600</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Percentage</div>
+                <div class="summary-value">89.33%</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">SGPA</div>
+                <div class="summary-value">8.9</div>
+            </div>
+            <div class="summary-item">
+                <div class="summary-label">Grade</div>
+                <div class="summary-value grade-highlight">A+</div>
+            </div>
+        </div>
+
+        <!-- Signatures -->
+        <div class="signatures">
+            <div class="signature">
+                <div class="signature-line"></div>
+                <p>Exam Controller</p>
+            </div>
+            <div class="signature">
+                <div class="signature-line"></div>
+                <p>Principal</p>
+            </div>
+            <div class="signature">
+                <div class="signature-line"></div>
+                <p>Registrar</p>
+            </div>
+        </div>
+
+        <!-- Declaration -->
+        <div class="declaration">
+            <p>This is a computer generated statement. No signature is required.</p>
+            <p>Generated on: 15-01-2024</p>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <button onclick="window.print()" class="btn btn-primary">
+                <i class="fas fa-print"></i> Print Result
+            </button>
+            <button onclick="downloadPDF()" class="btn btn-secondary">
+                <i class="fas fa-download"></i> Download PDF
+            </button>
+            <a href="student-dashboard.html" class="btn btn-outline">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
