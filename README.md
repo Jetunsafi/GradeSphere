@@ -60,6 +60,10 @@ erms/
 ### Step 4 – Access the Site
 Open: http://localhost/GradeSphere/index.html
 
+### Live Demo - Access the live Website
+Open : http://gradesphere.lovestoblog.com 
+
+
 ### Step 5 – Login & Test
 
 | Role | Username | Password |
